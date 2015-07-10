@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <title>Hello World</title>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script src="js/jquery.min.js"></script>
+        <script  src="js/tock.min.js"></script>
+        <style>
+            #laptimes {
+                border: 1px solid #ddd;
+                padding: 10px;
+                width: 200px;
+            }
+        </style>
+        <script>
+        window.onload = function() {
+            var timer = new Tock({
+                callback: function () {
+                    $('#clockface').val(timer.msToTime(timer.lap()));
+                }
+            });
+            $('#start').on('click', function () {
+                timer.start($('#clockface').val());
+            });
+            $('#lap').on('click', function () {
+                $('#laptimes').append(timer.msToTime(timer.lap()) + '<br>');
+            });
+            $('#pause').on('click', function () {
+                timer.pause();
+            });
+            $('#stop').on('click', function () {
+                timer.stop();
+            });
+            $('#reset').on('click', function () {
+                timer.reset();
+                $('#clockface').val('');
+                $('#laptimes').html('');
+            });
+            var countdown = Tock({
+                countdown: true,
+                interval: 250,
+                callback: function () {
+                    console.log(countdown.lap() / 1000);
+                    $('#countdown_clock').val(timer.msToTime(countdown.lap()));
+                },
+                complete: function () {
+                    console.log('end');
+                    alert("Time's up!");
+                }
+            });
+            $('#startCountdown').on('click', function () {
+                countdown.start($('#countdown_clock').val());
+            });
+            $('#pauseCountdown').on('click', function () {
+                countdown.pause();
+            });
+            $('#stopCountdown').on('click', function () {
+                countdown.stop();
+            });
+            $('#resetCountdown').on('click', function () {
+                countdown.stop();
+                $('#countdown_clock').val('00:02');
+            });
+        }
+    </script>
+    </head>
+    <body>
+        <div class="app">
+            <h1>Apache Cordova</h1>
+            <div id="deviceready" class="blink">
+                <p class="event listening">Connecting to Device</p>
+                <p class="event received">Device is Ready</p>
+            </div>
+        </div>
+        
+        <h1>Tock</h1>
+    <p>
+        by <a href="http://github.com/mrchimp/tock">Mr Chimp</a>
+    </p>
+
+    <section>
+        <h2>Timer</h2>
+        <p>
+            <button id="start">Start</button>
+            <button id="lap">Lap</button>
+            <button id="pause">Pause</button>
+            <button id="stop">Stop</button>
+            <button id="reset">Reset</button>
+        </p>
+        <p>
+            <input id="clockface" placeholder="00:00:00">
+        </p>
+        <p>
+            <div id="laptimes"></div>
+        </p>
+    </section>
+
+    <section>
+        <h2>Countdown</h2>
+        <p>
+            <button id="startCountdown">Start</button> 
+            <button id="stopCountdown">Stop</button> 
+            <button id="pauseCountdown">Pause</button> 
+            <button id="resetCountdown">Reset</button> 
+            <input id="countdown_clock" placeholder="00:00" value="00:02">
+        </p>
+    </section>
+        
+        
+    </body>
+</html>
