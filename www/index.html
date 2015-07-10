@@ -61,7 +61,10 @@
                     },
                     complete: function () {
                         console.log('end');
-                        alert("Time's up!");
+                        //alert("Time's up!");
+                        //document.getElementById('gong-sound').play();
+                        var audio = new Audio('../audio/Gong_long_quiet.mp3');
+                        audio.play();
                     }
                 });
                 $('#startCountdown').on('click', function () {
@@ -93,6 +96,7 @@
                 <button id="resetCountdown">Reset</button> 
                 <input id="countdown_clock" placeholder="00:00" value="10:00">
             </p>
+            <audio id="gong-sound" src="audio/Gong_long_quiet.mp3"></audio>
         </section>
         
         
