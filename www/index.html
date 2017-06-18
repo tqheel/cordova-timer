@@ -28,73 +28,37 @@
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *">
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
         <link rel="stylesheet" type="text/css" href="css/index.css">
-        <title>Hello World</title>
+        <title>Carpe Momentum</title>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script src="js/jquery.min.js"></script>
-        <script  src="js/tock.min.js"></script>
-        <style>
-            #laptimes {
-                border: 1px solid #ddd;
-                padding: 10px;
-                width: 200px;
-            }
-        </style>
+        <script src="js/tock.min.js"></script>
+        <script src="js/timer.js"></script>
         <script>
-            window.onload = function() {
-                var timer = new Tock({
-                    callback: function () {
-                        $('#clockface').val(timer.msToTime(timer.lap()));
-                    }
-                });
-                var countdown = Tock({
-                    countdown: true,
-                    interval: 250,
-                    callback: function () {
-                        console.log(countdown.lap() / 1000);
-                        $('#countdown_clock').val(timer.msToTime(countdown.lap()));
-                    },
-                    complete: function () {
-                        console.log('end');
-                        //alert("Time's up!");
-                        //document.getElementById('gong-sound').play();
-                        var audio = new Audio('../audio/Gong_long_quiet.mp3');
-                        audio.play();
-                    }
-                });
-                $('#startCountdown').on('click', function () {
-                    countdown.start($('#countdown_clock').val());
-                });
-                $('#pauseCountdown').on('click', function () {
-                    countdown.pause();
-                });
-                $('#stopCountdown').on('click', function () {
-                    countdown.stop();
-                });
-                $('#resetCountdown').on('click', function () {
-                    countdown.stop();
-                    $('#countdown_clock').val('10:00');
-                });
-            }
+            $(document).ready(function() {
+                timer();
+            });
         </script>
     </head>
     <body>
         
-        <h1>Meditation Timer</h1>
+        <h1>Carpe Momentum</h1>
     
-        <section>
-            <h2>Countdown</h2>
+        <section class="timer">
             <p>
                 <button id="startCountdown">Start</button> 
                 <button id="stopCountdown">Stop</button> 
                 <button id="pauseCountdown">Pause</button> 
                 <button id="resetCountdown">Reset</button> 
-                <input id="countdown_clock" placeholder="00:00" value="10:00">
+                <div>
+                    <input id="countdown_clock" placeholder="00:00" value="10:00">
+                </div>
+                
             </p>
             <audio id="gong-sound" src="audio/Gong_long_quiet.mp3"></audio>
         </section>
